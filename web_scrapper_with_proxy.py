@@ -3,12 +3,17 @@ from selenium.webdriver.chrome.options import DesiredCapabilities
 from selenium.webdriver.common.proxy import Proxy, ProxyType
 import re
 import time
+import csv
+import pandas as panda
 
 
 co = webdriver.ChromeOptions()
 co.add_argument("log-level=3")
 co.add_argument("--headless")
 a = re.compile('(#[0-9]+)PlayersBUSTED AT: ([0-9\.x]+)DATE: ([a-zA-Z,0-9: ]+) GMT')
+resultFile = open("kek.csv",'a')
+wr = csv.writer(resultFile, dialect='excel')
+
 
 def get_proxies():
     driver = webdriver.Chrome(executable_path='/Users/gudkov/PycharmProjects/Test/chromedriver_mac')
@@ -57,11 +62,14 @@ def proxy_driver(PROXIES, co=co):
 
 
 
+
 pd = proxy_driver(ALL_PROXIES)
 running = True
 
 while running:
-    for i in range(2597856, 2597856 + 10000):
+    dat = panda.read_csv('/Users/gudkov/PycharmProjects/Test/kek.csv', header=None)
+    next_game = dat[0].str.replace('#', '').astype(int).max() + 1
+    for i in range(next_game, next_game + 10000):
         url = 'https://www.bustabit.com/game/' + str(i)
         pd.get(url)
         time.sleep(4)
@@ -72,10 +80,14 @@ while running:
             res_text += row.text
         m = re.findall(a, res_text)
         print(m)
-
         if m == []:
             pd.close()
             break
+
+        try:
+            wr.writerow(m[0])
+        except:
+            continue
 
     new = ALL_PROXIES.pop()
 

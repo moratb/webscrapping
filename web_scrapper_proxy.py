@@ -57,11 +57,7 @@ def proxy_driver(PROXIES, co=co):
 
 
 
-# --- YOU ONLY NEED TO CARE FROM THIS LINE ---
-# creating new driver to use proxy
 pd = proxy_driver(ALL_PROXIES)
-
-# code must be in a while loop with a try to keep trying with different proxies
 running = True
 
 while running:
@@ -83,7 +79,6 @@ while running:
 
     new = ALL_PROXIES.pop()
 
-    # reassign driver if fail to switch proxy
     pd = proxy_driver(ALL_PROXIES)
     print("--- Switched proxy to: %s" % new)
     time.sleep(1)

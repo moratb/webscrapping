@@ -11,8 +11,7 @@ co = webdriver.ChromeOptions()
 co.add_argument("log-level=3")
 co.add_argument("--headless")
 a = re.compile('(#[0-9]+)PlayersBUSTED AT: ([0-9\.x]+)DATE: ([a-zA-Z,0-9: ]+) GMT')
-resultFile = open("kek.csv",'a')
-wr = csv.writer(resultFile, dialect='excel')
+
 
 
 def get_proxies():
@@ -69,6 +68,9 @@ running = True
 while running:
     dat = panda.read_csv('/Users/gudkov/PycharmProjects/Test/kek.csv', header=None)
     next_game = dat[0].str.replace('#', '').astype(int).max() + 1
+
+    resultFile = open("kek.csv", 'a')
+    wr = csv.writer(resultFile, dialect='excel')
     for i in range(next_game, next_game + 10000):
         url = 'https://www.bustabit.com/game/' + str(i)
         pd.get(url)
@@ -82,6 +84,7 @@ while running:
         print(m)
         if m == []:
             pd.close()
+            resultFile.close()
             break
 
         try:
@@ -90,6 +93,7 @@ while running:
             continue
 
     new = ALL_PROXIES.pop()
+
 
     pd = proxy_driver(ALL_PROXIES)
     print("--- Switched proxy to: %s" % new)

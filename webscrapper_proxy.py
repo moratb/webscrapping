@@ -63,7 +63,7 @@ def proxy_driver(PROXIES, co=co):
 
     driver = webdriver.Chrome(options=co,
                               desired_capabilities=capabilities,
-                              executable_path='/Users/gudkov/PycharmProjects/Test/chromedriver_mc21')
+                              executable_path='chromedriver_mc21')
 
     return driver
 
@@ -73,7 +73,7 @@ def proxy_driver(PROXIES, co=co):
 pd = proxy_driver(ALL_PROXIES)
 #pd.set_page_load_timeout(15)
 running = True
-dat = panda.read_csv('/Users/gudkov/PycharmProjects/Test/kek.csv', header=None)
+dat = panda.read_csv('kek.csv', header=None)
 next_game = dat[0].str.replace('#', '').astype(int).max() + 1
 
 
